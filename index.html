@@ -8,5 +8,79 @@
 <body style="background-color:black; color:gold; text-align:center; margin-top:100px;">
   <h1>🔥 Welcome to Bawou Market 🔥</h1>
   <p>The official website by Yacine Bouaziz</p>
+<footer style="
+  text-align:center;
+  padding: 25px;
+  margin-top: 50px;
+  background: linear-gradient(90deg, #000000, #1a1a1a);
+  font-family: 'Poppins', 'Tajawal', sans-serif;
+  font-size: 16px;
+  color: #f5c542;
+  border-top: 1px solid rgba(255, 215, 0, 0.4);
+  box-shadow: 0 -3px 12px rgba(255, 215, 0, 0.25);
+">
+  <div style="animation: fadeIn 2s ease-in-out;">
+    <span style="font-weight:600;">🚀 آخر تحديث:</span>
+    <span id="deploy-date" style="color:#ffd700;"></span><br>
+    <span>🔁 نُشر بفخر تحت إشراف  
+      <span style="
+        color:#ffd700;
+        font-weight:bold;
+        text-shadow: 0 0 10px gold;
+        font-family:'Great Vibes', cursive;
+        font-size: 22px;
+        display:inline-block;
+        animation: signature 4s infinite alternate ease-in-out;
+      ">
+        Hocine Bouaziz (Loupeur)
+      </span>
+      <span style="
+        display:inline-block;
+        margin-left:6px;
+        font-size:22px;
+        animation: drip 2s infinite ease-in-out;
+      ">
+        🍯
+      </span>
+    </span>
+  </div>
+
+  <style>
+    footer:hover {
+      background: linear-gradient(90deg, #111, #000);
+      transition: background 0.8s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes signature {
+      from { text-shadow: 0 0 5px gold, 0 0 10px #f5c542; }
+      to { text-shadow: 0 0 20px #ffd700, 0 0 40px #ffef99; }
+    }
+    @keyframes drip {
+      0%, 100% { transform: translateY(0); opacity: 1; }
+      50% { transform: translateY(5px); opacity: 0.8; }
+    }
+  </style>
+
+  <script>
+    // عرض التاريخ بالعربية
+    const now = new Date();
+    document.getElementById('deploy-date').textContent =
+      now.toLocaleDateString('ar-DZ', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+
+    // صوت ناعم لقطرة العسل عند تحميل الصفحة
+    const dropSound = new Audio('https://cdn.pixabay.com/audio/2022/03/15/audio_c36ffdf8e3.mp3');
+    window.addEventListener('load', () => {
+      setTimeout(() => dropSound.play().catch(()=>{}), 500);
+    });
+  </script>
+</footer>
 </body>
 </html>
