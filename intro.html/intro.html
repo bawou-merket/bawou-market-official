@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bawou Market — Proudly Algerian</title>
+  <meta name="description" content="Bawou Market — Crafted in Algeria. Luxury dark & gold landing showcasing food, grills, accessories and delivery: Sandwich Bawou • Bawou Metal • Bawou Market • Bawou Jib M3ak." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+  
+  <!-- 
+    تم دمج CSS هنا بدلاً من ملف 'css/style.css' الخارجي
+  -->
+  <style>
+    :root {
+      --bg-dark: #121212;
+      --bg-light: #1e1e1e;
+      --gold: #d4af37; /* لون ذهبي كلاسيكي */
+      --gold-transparent: #d4af371a;
+      --text-light: #f0f0f0;
+      --text-muted: #aaa;
+      --border-color: #333;
+    }
+
+    /* --- إعادة الضبط الأساسية --- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Tajawal', 'Poppins', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      line-height: 1.7;
+      overflow-x: hidden; /* منع التمرير الأفقي */
+    }
+
+    /* --- الأدوات المساعدة والحاويات --- */
+    .container {
+      width: 90%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    a {
+      color: var(--gold);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: var(--text-light);
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    /* --- الهيدر والتنقل --- */
+    .site-header {
+      padding: 1rem 0;
+      background-color: var(--bg-dark);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-light);
+    }
+
+    .brand img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+
+    .brand b {
+      color: var(--gold);
+      font-weight: 800;
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-menu a {
+      color: var(--text-light);
+      font-weight: 700;
+      padding: 0.5rem 0;
+      border-bottom: 2px solid transparent;
+    }
+
+    .nav-menu a:hover {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+    }
+
+    .nav-toggle {
+      display: none;
+      font-size: 2rem;
+      color: var(--text-light);
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* --- قسم الهيرو --- */
+    .hero {
+      padding: 6rem 0;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .hero-copy h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-copy h1 .gold {
+      color: var(--gold);
+    }
+
+    .hero-copy .sub {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      max-width: 50ch; /* تحديد عرض النص لسهولة القراءة */
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .btn {
+      padding: 0.8rem 1.8rem;
+      border-radius: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-gold {
+      background-color: var(--gold);
+      color: var(--bg-dark);
+    }
+
+    .btn-gold:hover {
+      background-color: #f0b90b; /* لون ذهبي أفتح عند المرور */
+      color: var(--bg-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      color: var(--gold);
+      border-color: var(--gold);
+    }
+
+    .btn-ghost:hover {
+      background-color: var(--gold);
+      color: var(--bg-dark);
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .tags span {
+      background-color: var(--bg-light);
+      color: var(--text-muted);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+    }
+
+    .hero-card {
+      position: relative;
+      background: var(--bg-light);
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+
+    .card-inner {
+      padding: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-card .mini {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .hero-card h2 {
+      font-size: 1.5rem;
+      margin: 0.5rem 0 1rem 0;
+    }
+
+    .hero-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn.small {
+      padding: 0.6rem 1.2rem;
+      font-size: 0.8rem;
+    }
+
+    /* تأثير التوهج - اختياري لكنه يضيف فخامة */
+    .glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, var(--gold) 0%, transparent 60%);
+      opacity: 0.1;
+      border-radius: 50%;
+      z-index: 1;
+      pointer-events: none;
+      transition: transform 0.1s ease-out;
+    }
+
+    /* --- قسم الأركان (Pillars) --- */
+    .pillars {
+      padding: 5rem 0;
+      background-color: var(--bg-light);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--bg-dark);
+      padding: 2rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: var(--gold);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card h4 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    /* --- قسم "من نحن" (About) --- */
+    .about {
+      padding: 5rem 0;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .about-grid p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 60ch;
+    }
+
+    .about-stamp {
+      background: var(--gold-transparent);
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      width: 180px;
+      height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    .about-stamp span {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .about-stamp b {
+      font-size: 4rem;
+      font-weight: 800;
+      color: var(--text-light);
+      line-height: 1;
+    }
+
+    /* --- قسم التواصل (Contact) --- */
+    .contact {
+      padding: 5rem 0;
+      background-color: var(--bg-light);
+    }
+
+    .contact-box {
+      max-width: 700px;
+      margin: 0 auto;
+      background: var(--bg-dark);
+      padding: 3rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .contact-box p {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: var(--text-muted);
+    }
+
+    .contact-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .contact-box a {
+      font-weight: 700;
+    }
+    
+    /* --- إضافة Gemini --- */
+    .gemini-feature-box {
+      max-width: 700px;
+      margin: 2rem auto 0 auto;
+      background: var(--bg-dark);
+      padding: 2.5rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      text-align: center;
+    }
+    
+    .gemini-feature-box h4 {
+      font-size: 1.5rem;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    
+    .gemini-feature-box p {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      font-size: 1rem; /* تصغير حجم الخط ليتناسب */
+    }
+    
+    .gemini-textarea {
+      width: 100%;
+      min-height: 100px;
+      background: var(--bg-light);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      color: var(--text-light);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 1rem;
+      resize: vertical;
+      margin-bottom: 1rem;
+    }
+    
+    .gemini-textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px var(--gold-transparent);
+    }
+    
+    .gemini-result-text {
+      background: var(--bg-light);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      text-align: right; /* لضمان محاذاة النص العربي */
+      white-space: pre-wrap; /* للحفاظ على تنسيق الأسطر من Gemini */
+      border: 1px solid var(--border-color);
+      color: var(--text-light);
+    }
+    
+    #geminiButton {
+      width: 100%;
+    }
+    
+    @media (min-width: 600px) {
+      #geminiButton {
+        width: auto;
+      }
+    }
+
+    /* --- الفوتر (Footer) --- */
+    .footer {
+      padding: 2rem 0;
+      background-color: var(--bg-dark);
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .foot-grid {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer small {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* --- استجابة للجوال (Responsiveness) --- */
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .hero-copy .sub {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .cta-row {
+        justify-content: center;
+      }
+      .tags {
+        justify-content: center;
+      }
+      .hero-card {
+        max-width: 400px;
+        margin: 0 auto;
+        text-align: right;
+      }
+      .about-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .about-grid p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .about-stamp {
+        margin-top: 2rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%; /* أسفل الهيدر مباشرة */
+        right: 0;
+        width: 100%;
+        background-color: var(--bg-light);
+        flex-direction: column;
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .nav-menu.active {
+        display: flex;
+      }
+
+      .nav-menu li {
+        text-align: center;
+        width: 100%;
+      }
+
+      .nav-menu a {
+        display: block;
+        padding: 1rem;
+        width: 100%;
+        border-bottom: 0;
+      }
+
+      .nav-menu a:hover {
+        background-color: var(--bg-dark);
+      }
+
+      .nav-toggle {
+        display: block; /* إظهار زر القائمة */
+      }
+
+      .hero {
+        padding: 4rem 0;
+      }
+
+      .hero-copy h1 {
+        font-size: 2.5rem;
+      }
+      
+      .cta-row {
+        flex-direction: column;
+      }
+
+      .foot-grid {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .contact-box, .gemini-feature-box {
+        padding: 2rem;
+      }
+    }
+  </style>
+  <!-- استبدال الأيقونة بـ SVG مضمن بسيط كعنصر نائب -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90' fill='%23d4af37'%3EB%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="container nav">
+      <a class="brand" href="#home">
+        <!-- استبدال الشعار بـ SVG مضمن بسيط كعنصر نائب -->
+        <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="48" fill="#d4af37"/>
+          <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Poppins, sans-serif" font-size="60" font-weight="800" fill="#121212">B</text>
+        </svg>
+        <span>BAWOU <b>MARKET</b></span>
+      </a>
+      <button id="navToggle" class="nav-toggle" aria-label="Toggle Menu">☰</button>
+      <ul id="navMenu" class="nav-menu">
+        <li><a href="#home">الرئيسية</a></li>
+        <li><a href="#pillars">أقسامنا</a></li>
+        <li><a href="#about">من نحن</a></li>
+        <li><a href="#contact">تواصل</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="home" class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <h1>مرحبًا بك في <span class="gold">Bawou Market</span></h1>
+        <p class="sub">
+          صنع في الجزائر بفخر — أصالة محلية وطموح عالمي. 
+          نُقدم طعامًا فاخرًا، شوايات بإتقان، إكسسوارات مختارة، وخدمة توصيل قيد الإنجاز.
+        </p>
+        <div class="cta-row">
+          <a href="#pillars" class="btn btn-gold">استكشف عالم بواو</a>
+          <a href="#contact" class="btn btn-ghost">تواصل معنا</a>
+        </div>
+        <div class="tags">
+          <span>Sandwich Bawou</span>
+          <span>Bawou Metal</span>
+          <span>Bawou Market</span>
+          <span>Bawou Jib M3ak</span>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="glow"></div>
+        <div class="card-inner">
+          <p class="mini">Made in Algeria 🇩🇿</p>
+          <h2>Luxury • Clean • Dark</h2>
+          <p>واجهة أولية قابلة للتوسّع — ارفعها الآن على Firebase ثم أضف المنتجات لاحقًا.</p>
+          <a class="btn btn-gold small" href="#pillars">جاهز للانطلاق</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <section id="pillars" class="pillars">
+    <div class="container">
+      <h3 class="section-title">أركان المنظومة</h3>
+      <div class="cards">
+        <article class="card">
+          <h4>Sandwich Bawou</h4>
+          <p>وجبات شبابية مع خبز Bayoubi الخاص وعروض الثلاثاء.</p>
+        </article>
+        <article class="card">
+          <h4>Bawou Metal</h4>
+          <p>شوايات جدارية وإكسسوارات فاخرة بلمسة جزائرية.</p>
+        </article>
+        <article class="card">
+          <h4>Bawou Market</h4>
+          <p>متجر للإكسسوارات والهدايا المختارة بعناية.</p>
+        </article>
+        <article class="card">
+          <h4>Bawou Jib M3ak</h4>
+          <p>شركة توصيل قيد الإنجاز — قريبًا.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <div class="container about-grid">
+      <div>
+        <h3 class="section-title" style="text-align: right;">حكايتنا</h3>
+        <p>
+          Bawou هي منظومة جزائرية طموحة تصنع الجودة بروح شبابية. هذه الصفحة
+          نسخة أولية نظيفة (Clean Dark) — يمكنك إضافة أقسام المنتجات لاحقًا:
+          الطعام، الشوايات، الإكسسوارات، والتوصيل.
+        </p>
+      </div>
+      <div class="about-stamp">
+        <span>Since</span>
+        <b>2025</b>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="container">
+      <h3 class="section-title">تواصل معنا</h3>
+      <div class="contact-box">
+        <p>واتساب: <a href="https://wa.me/213554644774" target="_blank" rel="noopener">0554644774</a></p>
+        <p>هاتف: 0676143265 — ثابت: 033268166</p>
+        <p>بريد: <a href="mailto:contact@bawou-market.com">contact@bawou-market.com</a></p>
+      </div>
+
+      <!-- إضافة Gemini API -->
+      <div class="gemini-feature-box">
+        <h4>✨ لست متأكدًا كيف تبدأ؟</h4>
+        <p>اكتب فكرتك أدناه، ودع الذكاء الاصطناعي يساعدك في صياغة رسالة احترافية.</p>
+        <textarea id="geminiPrompt" class="gemini-textarea" placeholder="مثال: أريد الاستفسار عن أسعار الشوايات وهل توصلون لولاية باتنة..."></textarea>
+        <button id="geminiButton" class="btn btn-gold">✨ صياغة الرسالة</button>
+        
+        <div id="geminiLoading" style="display: none; margin-top: 1rem; color: var(--text-muted);">
+          جاري الصياغة...
+        </div>
+        
+        <div id="geminiResultBox" style="display: none; margin-top: 1.5rem;">
+          <h5>الرسالة المقترحة:</h5>
+          <div id="geminiResult" class="gemini-result-text"></div>
+          <button id="copyButton" class="btn btn-ghost small">نسخ النص</button>
+          <span id="copySuccess" style="display: none; margin-inline-start: 10px; color: var(--gold);">تم النسخ!</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container foot-grid">
+      <small>© <span id="year"></span> Bawou Market — Proudly Made in Algeria.</small>
+      <small>Built with ❤️ on Hocine Bouaziz.</small>
+    </div>
+  </footer>
+
+  <!-- 
+    تم دمج JavaScript هنا بدلاً من ملف 'js/script.js' الخارجي
+  -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      // --- تشغيل القائمة المتنقلة ---
+      const navToggle = document.getElementById('navToggle');
+      const navMenu = document.getElementById('navMenu');
+
+      if (navToggle && navMenu) {
+        navToggle.addEventListener('click', () => {
+          navMenu.classList.toggle('active');
+        });
+
+        // إغلاق القائمة عند النقر على رابط (للتنقل في نفس الصفحة)
+        navMenu.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+            navMenu.classList.remove('active');
+          });
+        });
+      }
+
+      // --- تحديث سنة الفوتر تلقائيًا ---
+      const yearSpan = document.getElementById('year');
+      if (yearSpan) {
+        yearSpan.textContent = new Date().getFullYear();
+      }
+
+      // --- تأثير التوهج للبطاقة ---
+      const heroCard = document.querySelector('.hero-card');
+      const glow = document.querySelector('.glow');
+
+      if (heroCard && glow) {
+        heroCard.addEventListener('mousemove', (e) => {
+          const rect = heroCard.getBoundingClientRect();
+          const x = e.clientX - rect.left; // x position inside the element.
+          const y = e.clientY - rect.top;  // y position inside the element.
+          
+          // -50 لمركزة التوهج على مؤشر الفأرة (لأن عرض/ارتفاع التوهج 100 بكسل)
+          glow.style.transform = `translate(${x - 50}px, ${y - 50}px)`;
+          glow.style.opacity = '0.15';
+        });
+        
+        heroCard.addEventListener('mouseleave', () => {
+           glow.style.opacity = '0';
+        });
+      }
+
+      // --- إضافة Gemini API ---
+      const geminiButton = document.getElementById('geminiButton');
+      const geminiPrompt = document.getElementById('geminiPrompt');
+      const geminiLoading = document.getElementById('geminiLoading');
+      const geminiResultBox = document.getElementById('geminiResultBox');
+      const geminiResult = document.getElementById('geminiResult');
+      const copyButton = document.getElementById('copyButton');
+      const copySuccess = document.getElementById('copySuccess');
+
+      if (geminiButton) {
+        geminiButton.addEventListener('click', async () => {
+          const userQuery = geminiPrompt.value;
+          if (!userQuery.trim()) {
+            // بديل لـ alert()
+            geminiPrompt.style.borderColor = 'red';
+            geminiPrompt.placeholder = "الرجاء كتابة فكرة لرسالتك أولاً.";
+            setTimeout(() => { 
+              geminiPrompt.style.borderColor = 'var(--border-color)'; 
+              geminiPrompt.placeholder = "مثال: أريد الاستفسار عن أسعار الشوايات وهل توصلون لولاية باتنة...";
+            }, 3000);
+            return;
+          }
+
+          geminiLoading.style.display = 'block';
+          geminiResultBox.style.display = 'none';
+          geminiButton.disabled = true;
+
+          const systemPrompt = "أنت مساعد بريد إلكتروني محترف. مهمتك هي أخذ فكرة المستخدم الأولية وتحويلها إلى رسالة بريد إلكتروني واضحة وموجزة ومهذبة باللغة العربية، موجهة إلى فريق Bawou Market. حافظ على نبرة ودودة ورسمية. ابدأ الرسالة بـ 'تحية طيبة فريق Bawou Market،' واختمها بـ 'مع خالص الشكر والتقدير،'. لا تقم بإضافة أي نص إضافي قبل التحية أو بعد الختام.";
+
+          try {
+            const generatedText = await callGeminiAPI(systemPrompt, userQuery);
+            geminiResult.textContent = generatedText;
+            geminiResultBox.style.display = 'block';
+          } catch (error) {
+            console.error('Gemini API call failed:', error);
+            geminiResult.textContent = 'حدث خطأ أثناء محاولة الاتصال بالذكاء الاصطناعي. الرجاء المحاولة مرة أخرى.';
+            geminiResultBox.style.display = 'block';
+          } finally {
+            geminiLoading.style.display = 'none';
+            geminiButton.disabled = false;
+          }
+        });
+      }
+      
+      if (copyButton) {
+        copyButton.addEventListener('click', () => {
+          // إنشاء عنصر textarea مؤقت لاستخدام execCommand
+          const tempTextArea = document.createElement('textarea');
+          tempTextArea.value = geminiResult.textContent;
+          document.body.appendChild(tempTextArea);
+          tempTextArea.select();
+          try {
+            document.execCommand('copy');
+            copySuccess.style.display = 'inline';
+            setTimeout(() => { copySuccess.style.display = 'none'; }, 2000);
+          } catch (err) {
+            console.error('Failed to copy text: ', err);
+            copySuccess.textContent = 'فشل النسخ!';
+            copySuccess.style.display = 'inline';
+            setTimeout(() => { 
+              copySuccess.style.display = 'none'; 
+              copySuccess.textContent = 'تم النسخ!';
+            }, 2000);
+          }
+          document.body.removeChild(tempTextArea);
+        });
+      }
+
+    }); // --- نهاية DOMContentLoaded ---
+    
+    /**
+     * استدعاء Gemini API مع منطق إعادة المحاولة
+     * @param {string} systemPrompt - تعليمات النظام للنموذج
+     * @param {string} userQuery - مدخلات المستخدم
+     * @param {number} retries - عدد المحاولات المتبقية
+     * @param {number} delay - مدة الانتظار (تتضاعف)
+     * @returns {Promise<string>} - النص المُنشأ
+     */
+    async function callGeminiAPI(systemPrompt, userQuery, retries = 3, delay = 1000) {
+      const apiKey = ""; // سيتم توفير المفتاح تلقائيًا
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+      const payload = {
+        contents: [{ parts: [{ text: userQuery }] }],
+        systemInstruction: {
+          parts: [{ text: systemPrompt }]
+        },
+      };
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          // إعادة المحاولة عند خطأ "Too Many Requests"
+          if (response.status === 429 && retries > 0) {
+            // لا تقم بتسجيل هذا كخطأ في الكونسول
+            await new Promise(resolve => setTimeout(resolve, delay));
+            return callGeminiAPI(systemPrompt, userQuery, retries - 1, delay * 2);
+          }
+          throw new Error(`API Error: ${response.status} ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        const candidate = result.candidates?.[0];
+
+        if (candidate && candidate.content?.parts?.[0]?.text) {
+          return candidate.content.parts[0].text;
+        } else {
+          // هذا قد يحدث إذا كان الرد محجوبًا بسبب السلامة
+          console.warn('API response structure missing valid text:', result);
+          throw new Error('No valid content found in API response. The response might be blocked.');
+        }
+      } catch (error) {
+        // إعادة المحاولة عند فشل الاتصال بالشبكة
+        if (retries > 0) {
+          // لا تقم بتسجيل هذا كخطأ في الكونسول
+          await new Promise(resolve => setTimeout(resolve, delay));
+          return callGeminiAPI(systemPrompt, userQuery, retries - 1, delay * 2);
+        } else {
+          console.error('API call failed after retries:', error);
+          throw error; // إظهار الخطأ النهائي بعد فشل كل المحاولات
+        }
+      }
+    }
+  </script>
+</body>
+</html>
+
+
