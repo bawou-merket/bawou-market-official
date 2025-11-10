@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>لوحة تحكم باوو ماركت - إصدار محسّن</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{
+      --gold:#f1c40f;
+      --dark:#0b0f14;
+      --muted:#131923;
+      --accent:#3b82f6;
+    }
+    body{
+      background:linear-gradient(180deg,#0b0f14,#101725 60%,#0b0f14);
+      min-height:100vh;
+    }
+    .glass{
+      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.05);
+    }
+    .gold{color:var(--gold)}
+    .gold-bg{background:linear-gradient(135deg,#f8d14a,#eab308)}
+    .card{
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow: 0 8px 32px rgba(0,0,0,.3);
+      transition: all 0.3s ease;
+    }
+    .card:hover{
+      box-shadow: 0 12px 40px rgba(241,196,15,.15);
+      border-color: rgba(255,255,255,.12);
+    }
+    .btn{
+      background:linear-gradient(135deg,#f8d14a,#eab308);
+      color:#000;
+      font-weight:700;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(241,196,15,.4);
+    }
+    .btn:active{transform: translateY(0)}
+    .btn:disabled{filter:grayscale(1); opacity:.6}
+    .btn-secondary{
+      background: rgba(59,130,246,.2);
+      color: #60a5fa;
+      border: 1px solid rgba(59,130,246,.3);
+    }
+    .btn-danger{
+      background: rgba(239,68,68,.2);
+      color: #f87171;
+      border: 1px solid rgba(239,68,68,.3);
+    }
+    .sidebar a{
+      transition: all 0.2s ease;
+    }
+    .sidebar a.active{
+      background: rgba(241,196,15,.14);
+      color:#fff;
+      border-right: 3px solid var(--gold);
+    }
+    .sidebar a:hover{
+      background: rgba(255,255,255,.08);
+    }
+    .input-field{
+      background: #0e1522;
+      border: 1px solid rgba(255,255,255,.1);
+      transition: all 0.3s ease;
+    }
+    .input-field:focus{
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(241,196,15,.1);
+    }
+    .tbl th,.tbl td{
+      border-bottom:1px solid rgba(255,255,255,.06);
+      padding: 12px 8px;
+    }
+    .tbl th{
+      background: rgba(255,255,255,.02);
+      font-weight: 600;
+    }
+    .tbl tr:hover{
+      background: rgba(255,255,255,.02);
+    }
+    ::-webkit-scrollbar{height:10px; width:10px}
+    ::-webkit-scrollbar-track{background: #0e1522}
+    ::-webkit-scrollbar-thumb{background:#243047; border-radius:12px}
+    ::-webkit-scrollbar-thumb:hover{background:#2d3a52}
+    .toast{
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      z-index: 1000;
+      transition: transform 0.3s ease;
+    }
+    .toast.show{transform: translateX(-50%) translateY(0)}
+    .toast.success{background: rgba(34,197,94,.2); border: 1px solid rgba(34,197,94,.4); color: #4ade80}
+    .toast.error{background: rgba(239,68,68,.2); border: 1px solid rgba(239,68,68,.4); color: #f87171}
+    .stat-card{
+      background: linear-gradient(135deg, rgba(59,130,246,.1), rgba(147,51,234,.1));
+      border: 1px solid rgba(147,51,234,.2);
+    }
+    .mobile-menu{
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+    .mobile-menu.open{
+      transform: translateX(0);
+    }
+    @keyframes pulse{
+      0%, 100%{opacity: 1}
+      50%{opacity: 0.5}
+    }
+    .loading{animation: pulse 2s infinite}
+  </style>
+</head>
+<body class="text-white">
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Auth Gate -->
+  <div id="auth" class="fixed inset-0 grid place-items-center p-4 z-50" style="background:radial-gradient(1000px 600px at 50% -50%,rgba(241,196,15,.15),transparent), #0b0f14;">
+    <div class="glass card max-w-md w-full p-8 rounded-2xl">
+      <div class="text-center mb-6">
+        <div class="inline-block p-4 rounded-2xl gold-bg mb-4">
+          <span class="text-4xl">🔐</span>
+        </div>
+        <h1 class="text-3xl font-extrabold mb-2">دخول لوحة التحكم</h1>
+        <p class="text-sm opacity-75">أدخل كلمة السر الخاصة بالمشرف</p>
+      </div>
+      <label class="block text-sm mb-2 font-semibold">كلمة السر</label>
+      <input id="pwd" type="password" class="w-full px-4 py-3 rounded-xl input-field" placeholder="********"/>
+      <div class="flex items-center justify-between mt-4">
+        <label class="flex items-center gap-2 text-sm opacity-80 cursor-pointer">
+          <input id="remember" type="checkbox" class="w-4 h-4"/>
+          <span>تذكرني</span>
+        </label>
+        <button id="loginBtn" class="btn px-6 py-3 rounded-xl">دخول ←</button>
+      </div>
+      <div class="mt-4 p-3 rounded-xl bg-blue-500/10 border border-blue-500/20">
+        <p class="text-xs opacity-80">💡 كلمة السر الافتراضية: <span class="font-mono bg-white/10 px-2 py-1 rounded">bawou-2025</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Button -->
+  <button id="mobileMenuBtn" class="md:hidden fixed top-4 right-4 z-40 p-3 rounded-xl glass card">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
+  </button>
+
+  <!-- Layout -->
+  <div class="min-h-screen flex">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar w-72 fixed md:static inset-y-0 right-0 z-30 mobile-menu md:transform-none p-4 space-y-3 bg-[#0b1120] border-l border-white/10">
+      <div class="flex items-center gap-3 p-4 rounded-xl glass card">
+        <div class="w-12 h-12 rounded-xl gold-bg grid place-items-center font-black text-xl">B</div>
+        <div>
+          <div class="font-bold text-lg">Bawou Admin</div>
+          <div class="text-xs opacity-70">لوحة التحكم الشاملة</div>
+        </div>
+      </div>
+      
+      <nav class="space-y-2 text-sm">
+        <a data-route="home" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 cursor-pointer">
+          <span class="text-xl">🏠</span>
+          <span>الرئيسية</span>
+        </a>
+        <a data-route="branches" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 cursor-pointer">
+          <span class="text-xl">🏛️</span>
+          <span>الأركان</span>
+        </a>
+        <a data-route="prices" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 cursor-pointer">
+          <span class="text-xl">💰</span>
+          <span>الأسعار</span>
+        </a>
+        <a data-route="media" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 cursor-pointer">
+          <span class="text-xl">🖼️</span>
+          <span>الصور والشعارات</span>
+        </a>
+        <a data-route="analytics" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 cursor-pointer">
+          <span class="text-xl">📊</span>
+          <span>التحليلات</span>
+        </a>
+        <a data-route="settings" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 cursor-pointer">
+          <span class="text-xl">⚙️</span>
+          <span>الإعدادات</span>
+        </a>
+      </nav>
+      
+      <div class="pt-4 space-y-2">
+        <button id="exportBtn" class="w-full btn py-3 rounded-xl flex items-center justify-center gap-2">
+          <span>⬇️</span>
+          <span>تصدير النسخة الاحتياطية</span>
+        </button>
+        <label class="block">
+          <span class="text-xs opacity-80 mb-1 block">⬆️ استيراد ملف JSON</span>
+          <input id="importFile" type="file" accept="application/json" class="block w-full text-xs opacity-70"/>
+        </label>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-4 md:p-8 space-y-6">
+      <!-- Topbar -->
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-3xl font-extrabold gold mb-1">لوحة التحكم</h2>
+          <p class="text-sm opacity-70">تحكم كامل بالمحتوى — بدون لمس الكود</p>
+        </div>
+        <div class="flex items-center gap-3 w-full md:w-auto">
+          <a href="/" target="_blank" class="flex-1 md:flex-initial px-4 py-2 rounded-xl glass border border-white/10 hover:bg-white/10 text-center">
+            🌐 عرض الموقع
+          </a>
+          <button id="saveAll" class="flex-1 md:flex-initial btn px-6 py-3 rounded-xl flex items-center justify-center gap-2">
+            <span>💾</span>
+            <span>حفظ الكل</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Overview -->
+      <div id="statsOverview" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="stat-card rounded-2xl p-4">
+          <div class="text-xs opacity-70 mb-1">عدد الأركان</div>
+          <div class="text-3xl font-extrabold" id="stat-branches">0</div>
+        </div>
+        <div class="stat-card rounded-2xl p-4">
+          <div class="text-xs opacity-70 mb-1">عدد المنتجات</div>
+          <div class="text-3xl font-extrabold" id="stat-products">0</div>
+        </div>
+        <div class="stat-card rounded-2xl p-4">
+          <div class="text-xs opacity-70 mb-1">الصور المرفوعة</div>
+          <div class="text-3xl font-extrabold" id="stat-media">0</div>
+        </div>
+        <div class="stat-card rounded-2xl p-4">
+          <div class="text-xs opacity-70 mb-1">آخر تحديث</div>
+          <div class="text-sm font-bold" id="stat-updated">—</div>
+        </div>
+      </div>
+
+      <!-- Router Views -->
+      <section id="view-home" class="view space-y-4">
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="card glass rounded-2xl p-6">
+            <h3 class="font-bold mb-4 text-lg flex items-center gap-2">
+              <span>✨</span>
+              <span>نص البطاقة الرئيسية</span>
+            </h3>
+            <label class="text-sm opacity-80 block mb-2">العنوان الكبير</label>
+            <input id="hero_title" class="w-full mb-3 px-4 py-3 rounded-xl input-field" placeholder="منظومة Bawou Market — البيت الجزائري الفاخر">
+            <label class="text-sm opacity-80 block mb-2">وصف قصير</label>
+            <textarea id="hero_desc" rows="4" class="w-full px-4 py-3 rounded-xl input-field"></textarea>
+          </div>
+          
+          <div class="card glass rounded-2xl p-6">
+            <h3 class="font-bold mb-4 text-lg flex items-center gap-2">
+              <span>🔘</span>
+              <span>أزرار العرض</span>
+            </h3>
+            <div class="space-y-3">
+              <div>
+                <label class="text-sm opacity-80 block mb-1">زر 1 – نص</label>
+                <input id="cta1_text" class="w-full mb-2 px-4 py-2 rounded-xl input-field" placeholder="استكشف الأركان">
+                <label class="text-sm opacity-80 block mb-1">رابط</label>
+                <input id="cta1_link" class="w-full px-4 py-2 rounded-xl input-field" placeholder="#branches">
+              </div>
+              <div>
+                <label class="text-sm opacity-80 block mb-1">زر 2 – نص</label>
+                <input id="cta2_text" class="w-full mb-2 px-4 py-2 rounded-xl input-field" placeholder="استكشف العروض">
+                <label class="text-sm opacity-80 block mb-1">رابط</label>
+                <input id="cta2_link" class="w-full px-4 py-2 rounded-xl input-field" placeholder="#offers">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card glass rounded-2xl p-6">
+          <h3 class="font-bold mb-4 text-lg flex items-center gap-2">
+            <span>🇩🇿</span>
+            <span>شعار "صنع بفخر في الجزائر"</span>
+          </h3>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="text-sm opacity-80 block mb-2">إظهار الشعار</label>
+              <select id="madein_dz" class="w-full px-4 py-3 rounded-xl input-field">
+                <option value="true">نعم ✓</option>
+                <option value="false">لا ✗</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-sm opacity-80 block mb-2">نص الشعار</label>
+              <input id="madein_text" class="w-full px-4 py-3 rounded-xl input-field" placeholder="صنع بفخر في الجزائر 🇩🇿">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-branches" class="view hidden">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-2xl font-bold">الأركان (Cards)</h3>
+          <button id="addBranch" class="btn px-5 py-3 rounded-xl flex items-center gap-2">
+            <span>➕</span>
+            <span>إضافة ركن</span>
+          </button>
+        </div>
+        <div id="branchesList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+      </section>
+
+      <section id="view-prices" class="view hidden">
+        <div class="card glass rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-xl font-bold">جدول الأسعار</h3>
+            <button id="addPrice" class="btn px-5 py-3 rounded-xl flex items-center gap-2">
+              <span>➕</span>
+              <span>إضافة منتج</span>
+            </button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="tbl w-full text-sm">
+              <thead class="opacity-70">
+                <tr>
+                  <th class="text-right">الفرع</th>
+                  <th class="text-right">المنتج</th>
+                  <th class="text-right">السعر (USD)</th>
+                  <th class="text-right">ملاحظة</th>
+                  <th class="text-center">إجراءات</th>
+                </tr>
+              </thead>
+              <tbody id="priceRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-media" class="view hidden space-y-4">
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="card glass rounded-2xl p-6">
+            <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+              <span>📤</span>
+              <span>رفع شعار/صورة</span>
+            </h3>
+            <div class="border-2 border-dashed border-white/20 rounded-xl p-6 text-center hover:border-gold/50 transition-colors cursor-pointer" id="dropZone">
+              <input id="imageInput" type="file" accept="image/*" class="hidden"/>
+              <div class="text-4xl mb-2">📸</div>
+              <p class="text-sm opacity-70">اضغط أو اسحب الصورة هنا</p>
+            </div>
+            <div class="mt-4">
+              <img id="preview" class="hidden w-full aspect-video object-cover rounded-xl border border-white/10"/>
+            </div>
+            <div class="mt-4 p-3 rounded-xl bg-blue-500/10 border border-blue-500/20">
+              <p class="text-xs opacity-80">💡 يتم حفظ الصور محليًا (Base64). لاستخدام Firebase Storage، فعّل الإعدادات في تبويب الإعدادات.</p>
+            </div>
+          </div>
+          
+          <div class="card glass rounded-2xl p-6">
+            <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+              <span>🖼️</span>
+              <span>مكتبة الصور (<span id="mediaCount">0</span>)</span>
+            </h3>
+            <div id="mediaGrid" class="grid grid-cols-3 gap-3 max-h-96 overflow-y-auto"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-analytics" class="view hidden space-y-4">
+        <div class="grid lg:grid-cols-2 gap-4">
+          <div class="card glass rounded-2xl p-6">
+            <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+              <span>📈</span>
+              <span>Google Analytics (GA4)</span>
+            </h3>
+            <p class="text-sm opacity-80 mb-3">يمكنك تضمين لوحة Looker Studio هنا. ضع رابط الـ Embed:</p>
+            <input id="looker_embed" class="w-full px-4 py-3 rounded-xl input-field mb-3" placeholder="https://lookerstudio.google.com/embed/reporting/..."/>
+            <button id="loadEmbed" class="btn-secondary px-4 py-2 rounded-xl w-full">تحميل اللوحة</button>
+            <div id="embedWrap" class="mt-4 hidden">
+              <iframe id="embedFrame" class="w-full h-[420px] rounded-xl border border-white/10"></iframe>
+            </div>
+          </div>
+          
+          <div class="card glass rounded-2xl p-6">
+            <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+              <span>📊</span>
+              <span>مؤشرات سريعة</span>
+            </h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="glass rounded-xl p-4 text-center">
+                <div class="opacity-70 text-xs mb-2">الزوار النشطون</div>
+                <div id="metric_active" class="text-3xl font-extrabold gold">—</div>
+              </div>
+              <div class="glass rounded-xl p-4 text-center">
+                <div class="opacity-70 text-xs mb-2">مشاهدات الصفحة</div>
+                <div id="metric_views" class="text-3xl font-extrabold gold">—</div>
+              </div>
+              <div class="glass rounded-xl p-4 text-center">
+                <div class="opacity-70 text-xs mb-2">المستخدمون الجدد</div>
+                <div id="metric_new" class="text-3xl font-extrabold gold">—</div>
+              </div>
+              <div class="glass rounded-xl p-4 text-center">
+                <div class="opacity-70 text-xs mb-2">المناطق</div>
+                <div id="metric_cities" class="text-3xl font-extrabold gold">—</div>
+              </div>
+            </div>
+            <div class="mt-4 p-3 rounded-xl bg-yellow-500/10 border border-yellow-500/20">
+              <p class="text-xs opacity-80">⚠️ عرض تجريبي — اربط لاحقًا بواجهة GA4 API لبيانات حية.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-settings" class="view hidden space-y-4">
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="card glass rounded-2xl p-6">
+            <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+              <span>🔒</span>
+              <span>حماية لوحة التحكم</span>
+            </h3>
+            <label class="text-sm opacity-80 block mb-2">تغيير كلمة السر</label>
+            <input id="admin_pass" type="password" class="w-full mb-3 px-4 py-3 rounded-xl input-field" placeholder="أدخل كلمة السر الجديدة"/>
+            <button id="setPass" class="btn w-full py-3 rounded-xl">🔐 حفظ كلمة السر</button>
+            <div class="mt-3 p-3 rounded-xl bg-red-500/10 border border-red-500/20">
+              <p class="text-xs opacity-80">⚠️ تُخزن محليًا في المتصفح. لا تشاركها مع أحد.</p>
+            </div>
+          </div>
+          
+          <div class="card glass rounded-2xl p-6">
+            <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+              <span>🔥</span>
+              <span>Firebase (اختياري)</span>
+            </h3>
+            <p class="text-sm opacity-80 mb-3">للمزامنة السحابية، ضع مفاتيح Firebase:</p>
+            <textarea id="firebase_json" rows="8" class="w-full px-4 py-3 rounded-xl input-field font-mono text-xs" placeholder='{
+  "apiKey":"...",
+  "authDomain":"...",
+  "projectId":"...",
+  "storageBucket":"...",
+  "messagingSenderId":"...",
+  "appId":"..."
+}'></textarea>
+            <div class="flex gap-2 mt-3">
+              <button id="initFirebase" class="btn flex-1 py-3 rounded-xl">تهيئة Firebase</button>
+              <button id="syncNow" class="btn-secondary flex-1 py-3 rounded-xl">⤴️ مزامنة</button>
+            </div>
+            <div class="mt-3 p-3 rounded-xl bg-blue-500/10 border border-blue-500/20">
+              <p class="text-xs opacity-80">💡 إن لم تضع المفاتيح، تظل اللوحة تعمل محليًا.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+  /************** البيانات الافتراضية **************/
+  const DEFAULT_DATA = {
+    hero: {
+      title: "منظومة Bawou Market — البيت الجزائري الفاخر",
+      desc: "يجمع كل فروع الإبداع في مكان واحد: Sandwich Bawou, Bawou Metal, Bawou Mina, Loupeur...",
+      cta1: { text: "استكشف الأركان", link: "#branches" },
+      cta2: { text: "استكشف العروض", link: "#offers" },
+      madeIn: { enabled: true, text: "صنع بفخر في الجزائر 🇩🇿" }
+    },
+    branches: [
+      { id: cryptoId(), emoji:"🍔", key:"sandwich", title:"Sandwich Bawou", desc:"وجبات شبابية فاخرة — أسرع – ألذ", price:15 },
+      { id: cryptoId(), emoji:"🔥", key:"metal", title:"Bawou Metal", desc:"شوايات ومعدّات معدنية مخصصة — صنع جزائري", price:50 },
+      { id: cryptoId(), emoji:"👗", key:"mina", title:"Bawou Mina", desc:"أزياء نسائية راقية – أذواق متعددة", price:29 },
+      { id: cryptoId(), emoji:"🍯", key:"loupeur", title:"Bawou Loupeur", desc:"عسل فاخر للأزواج – صنع في الجزائر", price:12 },
+      { id: cryptoId(), emoji:"🚚", key:"jibm3ak", title:"Bawou Jib M3ak", desc:"توصيل سريع – قريبًا التطبيق Bip Bip", price:0 }
+    ],
+    prices:[
+      { id: cryptoId(), branch:"Sandwich Bawou", name:"Burger Mixte", price:4, note:"قريبًا" },
+      { id: cryptoId(), branch:"Sandwich Bawou", name:"Tacos Viande Hachée", price:5, note:"" },
+      { id: cryptoId(), branch:"Bawou Metal", name:"Grill mural 60cm", price:120, note:"حسب الطلب" }
+    ],
+    media: [],
+    embeds: { looker: "" },
+    metrics: { active:0, views:0, new:0, cities:0 },
+    lastUpdated: Date.now()
+  }
+
+  const ADMIN_PASSWORD = localStorage.getItem('bawou_admin_pass') || 'bawou-2025';
+
+  /************** تخزين **************/
+  function loadData(){
+    try{ 
+      const data = JSON.parse(localStorage.getItem('bawou_admin_data'));
+      return data || DEFAULT_DATA;
+    }catch(e){ 
+      return DEFAULT_DATA;
+    }
+  }
+  
+  function saveData(data){
+    data.lastUpdated = Date.now();
+    localStorage.setItem('bawou_admin_data', JSON.stringify(data));
+    updateStats();
+  }
+
+  let state = loadData();
+
+  /************** Toast Notifications **************/
+  function showToast(message, type = 'success'){
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = `toast ${type}`;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  /************** Auth **************/
+  const authEl = document.getElementById('auth');
+  const loginBtn = document.getElementById('loginBtn');
+  const pwdInput = document.getElementById('pwd');
+  
+  pwdInput.addEventListener('keypress', (e) => {
+    if(e.key === 'Enter') loginBtn.click();
+  });
+  
+  loginBtn.onclick = () => {
+    const val = pwdInput.value.trim();
+    if(!val){
+      showToast('الرجاء إدخال كلمة السر', 'error');
+      return;
+    }
+    const ok = val === (localStorage.getItem('bawou_admin_pass') || ADMIN_PASSWORD);
+    if(ok){
+      if(document.getElementById('remember').checked){ 
+        sessionStorage.setItem('bawou_admin_logged','1');
+      }
+      authEl.style.display='none';
+      showToast('مرحباً بك في لوحة التحكم! 🎉', 'success');
+    }else{
+      showToast('كلمة السر غير صحيحة ❌', 'error');
+      pwdInput.value = '';
+      pwdInput.focus();
+    }
+  }
+  
+  if(sessionStorage.getItem('bawou_admin_logged')==='1'){ 
+    authEl.style.display='none';
+  }
+
+  /************** Mobile Menu **************/
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const sidebar = document.getElementById('sidebar');
+  
+  mobileMenuBtn.onclick = () => {
+    sidebar.classList.toggle('open');
+  };
+
+  /************** Router **************/
+  const routes = ['home','branches','prices','media','analytics','settings'];
+  const links = document.querySelectorAll('.sidebar a');
+  
+  links.forEach(a => {
+    a.onclick = (e) => {
+      e.preventDefault();
+      go(a.dataset.route);
+      // Close mobile menu after navigation
+      sidebar.classList.remove('open');
+    }
+  });
+  
+  function go(name){
+    document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+    const view = document.getElementById('view-'+name);
+    if(view) view.classList.remove('hidden');
+    
+    links.forEach(a => a.classList.toggle('active', a.dataset.route===name));
+    
+    if(name==='branches') renderBranches();
+    if(name==='prices') renderPrices();
+    if(name==='media') renderMedia();
+    if(name==='home') fillHomeForm();
+    if(name==='analytics') initEmbed();
+  }
+  
+  go('home');
+
+  /************** Stats Update **************/
+  function updateStats(){
+    document.getElementById('stat-branches').textContent = state.branches.length;
+    document.getElementById('stat-products').textContent = state.prices.length;
+    document.getElementById('stat-media').textContent = state.media.length;
+    
+    const lastUpdate = new Date(state.lastUpdated || Date.now());
+    const timeStr = lastUpdate.toLocaleTimeString('ar-DZ', {hour: '2-digit', minute:'2-digit'});
+    document.getElementById('stat-updated').textContent = timeStr;
+  }
+  
+  updateStats();
+
+  /************** Home Form **************/
+  function fillHomeForm(){
+    const h = state.hero;
+    setVal('hero_title', h.title);
+    setVal('hero_desc', h.desc);
+    setVal('cta1_text', h.cta1.text);
+    setVal('cta1_link', h.cta1.link);
+    setVal('cta2_text', h.cta2.text);
+    setVal('cta2_link', h.cta2.link);
+    setVal('madein_text', h.madeIn.text);
+    document.getElementById('madein_dz').value = String(h.madeIn.enabled);
+  }
+
+  function setVal(id, v){ 
+    const el = document.getElementById(id);
+    if(el) el.value = v || '';
+  }
+  
+  function getVal(id){ 
+    return document.getElementById(id).value;
+  }
+
+  document.getElementById('saveAll').onclick = () => {
+    try{
+      state.hero.title = getVal('hero_title');
+      state.hero.desc = getVal('hero_desc');
+      state.hero.cta1.text = getVal('cta1_text');
+      state.hero.cta1.link = getVal('cta1_link');
+      state.hero.cta2.text = getVal('cta2_text');
+      state.hero.cta2.link = getVal('cta2_link');
+      state.hero.madeIn.enabled = document.getElementById('madein_dz').value==='true';
+      state.hero.madeIn.text = getVal('madein_text');
+      
+      saveData(state);
+      showToast('✔️ تم حفظ كل التغييرات بنجاح!', 'success');
+    }catch(e){
+      showToast('❌ حدث خطأ أثناء الحفظ', 'error');
+    }
+  }
+
+  /************** Branches **************/
+  const branchesList = document.getElementById('branchesList');
+  
+  function renderBranches(){
+    branchesList.innerHTML = '';
+    
+    if(state.branches.length === 0){
+      branchesList.innerHTML = '<div class="col-span-full text-center p-8 glass rounded-2xl"><p class="opacity-70">لا توجد أركان حالياً. اضغط "إضافة ركن" للبدء.</p></div>';
+      return;
+    }
+    
+    state.branches.forEach((b,i) => {
+      const el = document.createElement('div');
+      el.className='card glass rounded-2xl p-5 space-y-3';
+      el.innerHTML = `
+        <div class="flex items-center justify-between">
+          <div class="text-2xl flex items-center gap-2">
+            <span>${b.emoji}</span>
+            <span class="font-bold text-lg">${escapeHtml(b.title)}</span>
+          </div>
+          <div class="flex gap-2">
+            <button class="px-2 py-1 rounded-lg glass border border-white/10 hover:bg-white/10 text-sm" data-act="up" title="تحريك للأعلى">⬆️</button>
+            <button class="px-2 py-1 rounded-lg glass border border-white/10 hover:bg-white/10 text-sm" data-act="down" title="تحريك للأسفل">⬇️</button>
+            <button class="px-2 py-1 rounded-lg btn-danger text-sm" data-act="del">🗑️</button>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs opacity-70 block mb-1">الإيموجي</label>
+            <input data-f="emoji" class="w-full px-3 py-2 rounded-lg input-field text-center text-xl" value="${b.emoji}" maxlength="2">
+          </div>
+          <div>
+            <label class="text-xs opacity-70 block mb-1">العنوان</label>
+            <input data-f="title" class="w-full px-3 py-2 rounded-lg input-field" value="${escapeHtml(b.title)}">
+          </div>
+          <div class="col-span-2">
+            <label class="text-xs opacity-70 block mb-1">الوصف</label>
+            <textarea data-f="desc" rows="2" class="w-full px-3 py-2 rounded-lg input-field">${escapeHtml(b.desc)}</textarea>
+          </div>
+          <div>
+            <label class="text-xs opacity-70 block mb-1">السعر الافتراضي</label>
+            <input data-f="price" type="number" step="0.01" class="w-full px-3 py-2 rounded-lg input-field" value="${b.price}">
+          </div>
+          <div>
+            <label class="text-xs opacity-70 block mb-1">المعرف الفريد</label>
+            <input data-f="key" class="w-full px-3 py-2 rounded-lg input-field" value="${b.key || ''}">
+          </div>
+        </div>`;
+      
+      el.querySelectorAll('input,textarea').forEach(inp => {
+        inp.oninput = () => { 
+          b[inp.dataset.f] = (inp.type==='number') ? Number(inp.value) : inp.value;
+          saveData(state);
+        }
+      });
+      
+      el.querySelector('[data-act="del"]').onclick = () => { 
+        if(confirm('هل أنت متأكد من حذف هذا الركن؟')){
+          state.branches.splice(i,1);
+          saveData(state);
+          renderBranches();
+          showToast('تم حذف الركن', 'success');
+        }
+      }
+      
+      el.querySelector('[data-act="up"]').onclick = () => { 
+        if(i>0){
+          [state.branches[i-1], state.branches[i]] = [state.branches[i], state.branches[i-1]];
+          saveData(state);
+          renderBranches();
+          showToast('تم تحريك الركن للأعلى', 'success');
+        }
+      }
+      
+      el.querySelector('[data-act="down"]').onclick = () => { 
+        if(i < state.branches.length-1){
+          [state.branches[i+1], state.branches[i]] = [state.branches[i], state.branches[i+1]];
+          saveData(state);
+          renderBranches();
+          showToast('تم تحريك الركن للأسفل', 'success');
+        }
+      }
+      
+      branchesList.appendChild(el);
+    });
+  }
+  
+  document.getElementById('addBranch').onclick = () => {
+    state.branches.push({
+      id: cryptoId(),
+      emoji: '✨',
+      key: 'new-' + cryptoId(),
+      title: 'ركن جديد',
+      desc: 'أضف وصفاً قصيراً هنا',
+      price: 0
+    });
+    saveData(state);
+    renderBranches();
+    showToast('تم إضافة ركن جديد', 'success');
+  }
+
+  /************** Prices **************/
+  const priceRows = document.getElementById('priceRows');
+  
+  function renderPrices(){
+    priceRows.innerHTML='';
+    
+    if(state.prices.length === 0){
+      priceRows.innerHTML = '<tr><td colspan="5" class="text-center py-8 opacity-70">لا توجد منتجات. اضغط "إضافة منتج" للبدء.</td></tr>';
+      return;
+    }
+    
+    state.prices.forEach((p,i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="py-3"><input data-f="branch" class="w-full px-3 py-2 rounded-lg input-field" value="${escapeHtml(p.branch)}"></td>
+        <td class="py-3"><input data-f="name" class="w-full px-3 py-2 rounded-lg input-field" value="${escapeHtml(p.name)}"></td>
+        <td class="py-3"><input data-f="price" type="number" step="0.01" class="w-28 px-3 py-2 rounded-lg input-field" value="${p.price}"></td>
+        <td class="py-3"><input data-f="note" class="w-full px-3 py-2 rounded-lg input-field" value="${escapeHtml(p.note||'')}"></td>
+        <td class="py-3 text-center">
+          <button class="px-3 py-1 rounded-lg btn-danger text-sm" data-act="del">حذف</button>
+        </td>`;
+      
+      tr.querySelectorAll('input').forEach(inp => {
+        inp.oninput = () => { 
+          p[inp.dataset.f] = (inp.type==='number') ? Number(inp.value) : inp.value;
+          saveData(state);
+        }
+      });
+      
+      tr.querySelector('[data-act="del"]').onclick = () => { 
+        if(confirm('حذف هذا المنتج؟')){
+          state.prices.splice(i,1);
+          saveData(state);
+          renderPrices();
+          showToast('تم حذف المنتج', 'success');
+        }
+      }
+      
+      priceRows.appendChild(tr);
+    });
+  }
+  
+  document.getElementById('addPrice').onclick = () => {
+    state.prices.push({
+      id: cryptoId(),
+      branch: 'Sandwich Bawou',
+      name: 'منتج جديد',
+      price: 0,
+      note: ''
+    });
+    saveData(state);
+    renderPrices();
+    showToast('تم إضافة منتج جديد', 'success');
+  }
+
+  /************** Media **************/
+  const imageInput = document.getElementById('imageInput');
+  const preview = document.getElementById('preview');
+  const mediaGrid = document.getElementById('mediaGrid');
+  const dropZone = document.getElementById('dropZone');
+  
+  // Click to upload
+  dropZone.onclick = () => imageInput.click();
+  
+  // Drag and drop
+  dropZone.ondragover = (e) => {
+    e.preventDefault();
+    dropZone.style.borderColor = 'var(--gold)';
+  };
+  
+  dropZone.ondragleave = () => {
+    dropZone.style.borderColor = '';
+  };
+  
+  dropZone.ondrop = (e) => {
+    e.preventDefault();
+    dropZone.style.borderColor = '';
+    const file = e.dataTransfer.files[0];
+    if(file && file.type.startsWith('image/')) {
+      handleImageUpload(file);
+    }
+  };
+  
+  imageInput.onchange = (e) => {
+    const file = e.target.files[0];
+    if(file) handleImageUpload(file);
+  }
+  
+  function handleImageUpload(file){
+    if(file.size > 5 * 1024 * 1024){
+      showToast('الصورة كبيرة جداً (الحد الأقصى 5MB)', 'error');
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = () => {
+      preview.src = reader.result;
+      preview.classList.remove('hidden');
+      
+      state.media.push({
+        id: cryptoId(),
+        dataUrl: reader.result,
+        name: file.name,
+        size: file.size,
+        uploadedAt: Date.now()
+      });
+      
+      saveData(state);
+      renderMedia();
+      showToast('تم رفع الصورة بنجاح ✓', 'success');
+    }
+    reader.readAsDataURL(file);
+  }
+  
+  function renderMedia(){
+    mediaGrid.innerHTML = '';
+    document.getElementById('mediaCount').textContent = state.media.length;
+    
+    if(state.media.length === 0){
+      mediaGrid.innerHTML = '<div class="col-span-full text-center p-4 opacity-70 text-sm">لا توجد صور</div>';
+      return;
+    }
+    
+    state.media.forEach((m,i) => {
+      const d = document.createElement('div');
+      d.className = 'relative group';
+      d.innerHTML = `
+        <img src="${m.dataUrl}" class="w-full aspect-square object-cover rounded-xl border border-white/10 cursor-pointer hover:border-gold/50 transition-all" title="${m.name}"/>
+        <button class='absolute top-2 left-2 bg-red-600/90 hover:bg-red-600 px-2 py-1 rounded-lg text-xs opacity-0 group-hover:opacity-100 transition-opacity' data-i='${i}'>🗑️</button>
+        <div class="absolute bottom-2 left-2 right-2 bg-black/80 px-2 py-1 rounded text-xs truncate opacity-0 group-hover:opacity-100 transition-opacity">${m.name}</div>
+      `;
+      
+      d.querySelector('img').onclick = () => {
+        window.open(m.dataUrl, '_blank');
+      };
+      
+      d.querySelector('button').onclick = (e) => {
+        e.stopPropagation();
+        if(confirm('حذف هذه الصورة؟')){
+          state.media.splice(i,1);
+          saveData(state);
+          renderMedia();
+          showToast('تم حذف الصورة', 'success');
+        }
+      }
+      
+      mediaGrid.appendChild(d);
+    });
+  }
+
+  /************** Analytics Embed **************/
+  function initEmbed(){
+    const v = state.embeds.looker || '';
+    const inp = document.getElementById('looker_embed');
+    inp.value = v;
+    
+    const wrap = document.getElementById('embedWrap');
+    const loadBtn = document.getElementById('loadEmbed');
+    
+    loadBtn.onclick = () => {
+      const url = inp.value.trim();
+      if(url){
+        state.embeds.looker = url;
+        saveData(state);
+        wrap.classList.remove('hidden');
+        document.getElementById('embedFrame').src = url;
+        showToast('تم تحميل لوحة Analytics', 'success');
+      }else{
+        showToast('الرجاء إدخال رابط صحيح', 'error');
+      }
+    };
+    
+    if(v){
+      wrap.classList.remove('hidden');
+      document.getElementById('embedFrame').src = v;
+    }
+  }
+
+  /************** Export / Import **************/
+  document.getElementById('exportBtn').onclick = () => {
+    try{
+      const dataStr = JSON.stringify(state, null, 2);
+      const blob = new Blob([dataStr], {type:'application/json'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `bawou-backup-${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      showToast('تم تصدير النسخة الاحتياطية ✓', 'success');
+    }catch(e){
+      showToast('فشل التصدير ❌', 'error');
+    }
+  }
+  
+  document.getElementById('importFile').onchange = (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    
+    const r = new FileReader();
+    r.onload = () => {
+      try{
+        const imported = JSON.parse(r.result);
+        if(confirm('هل تريد استيراد هذه البيانات؟ سيتم استبدال البيانات الحالية.')){
+          state = imported;
+          saveData(state);
+          showToast('تم الاستيراد بنجاح ✓', 'success');
+          setTimeout(() => location.reload(), 1500);
+        }
+      }catch(err){
+        showToast('ملف JSON غير صالح ❌', 'error');
+      }
+    };
+    r.readAsText(file);
+  }
+
+  /************** Settings **************/
+  document.getElementById('setPass').onclick = () => {
+    const v = document.getElementById('admin_pass').value.trim();
+    if(v.length < 6){
+      showToast('كلمة السر يجب أن تكون 6 أحرف على الأقل', 'error');
+      return;
+    }
+    localStorage.setItem('bawou_admin_pass', v);
+    showToast('✓ تم تحديث كلمة السر بنجاح', 'success');
+    document.getElementById('admin_pass').value = '';
+  }
+
+  document.getElementById('initFirebase').onclick = () => {
+    try{
+      const cfg = JSON.parse(document.getElementById('firebase_json').value);
+      if(!cfg.apiKey || !cfg.projectId){
+        throw new Error('بيانات غير كاملة');
+      }
+      window.bawouFirebaseCfg = cfg;
+      showToast('✔️ تم حفظ إعدادات Firebase', 'success');
+    }catch(e){
+      showToast('صيغة JSON غير صحيحة أو بيانات ناقصة', 'error');
+    }
+  }
+  
+  document.getElementById('syncNow').onclick = () => {
+    if(!window.bawouFirebaseCfg){
+      showToast('أدخل إعدادات Firebase وفعّلها أولاً', 'error');
+      return;
+    }
+    showToast('المزامنة قيد التطوير - البيانات محفوظة محلياً حالياً', 'success');
+  }
+
+  /************** Utils **************/
+  function cryptoId(){
+    return 'id_' + Math.random().toString(36).slice(2,11);
+  }
+  
+  function escapeHtml(s){
+    if(!s) return '';
+    return String(s)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#039;');
+  }
+
+  /************** تهيئة أولية **************/
+  fillHomeForm();
+  renderMedia();
+  
+  // Auto-save indicator (optional)
+  let saveTimeout;
+  const originalSaveData = saveData;
+  saveData = function(data){
+    clearTimeout(saveTimeout);
+    saveTimeout = setTimeout(() => {
+      originalSaveData(data);
+    }, 500);
+  }
+  
+  console.log('✨ لوحة تحكم Bawou Market جاهزة!');
+  console.log('📊 إحصائيات:', {
+    branches: state.branches.length,
+    products: state.prices.length,
+    media: state.media.length
+  });
+  </script>
+</body>
+</html>

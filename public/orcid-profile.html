@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Yacine Bouaziz — ORCID Profile | Bawou Group</title>
+  <meta name="description" content="Official interactive profile of Yacine Bouaziz (Bawou Group) — ORCID, Google Cloud, GitHub, funding, and works." />
+  <meta name="theme-color" content="#f5d26b" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0a0a0f;
+      --panel:#0f141c;
+      --gold:#f5d26b;
+      --gold2:#e3b94c;
+      --ink:#e9edf5;
+      --muted:#93a0b5;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{
+      background:var(--bg);
+      color:var(--ink);
+      font-family:'Tajawal','Inter',system-ui,sans-serif;
+      line-height:1.65;
+      overflow-x:hidden;
+    }
+
+    /* 💫 خلفية متحركة بوميض ذهبي */
+    .bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+    .blob{position:absolute;border-radius:50%;filter:blur(60px);animation:float 20s ease-in-out infinite}
+    .b1{width:420px;height:420px;background:linear-gradient(135deg,var(--gold),#fff);top:10%;left:10%}
+    .b2{width:340px;height:340px;background:linear-gradient(135deg,#7aa2ff,#9b59b6);bottom:14%;right:12%;animation-delay:6s}
+    .aura{
+      position:absolute;left:50%;top:30vh;width:520px;height:520px;
+      transform:translateX(-50%);
+      border-radius:50%;
+      background:radial-gradient(closest-side,rgba(245,210,107,.22),rgba(245,210,107,.08),transparent 70%);
+      filter:blur(16px);
+      animation:spin 10s linear infinite;
+    }
+    @keyframes spin{to{transform:translateX(-50%) rotate(360deg)}}
+    @keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,40px) scale(1.05)}}
+
+    /* ⚜️ الغلاف العام */
+    .wrap{max-width:1280px;margin:0 auto;padding:clamp(16px,3vw,32px);position:relative;z-index:1}
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:16px;padding:14px 0;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      backdrop-filter:blur(10px);
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:46px;height:46px;border-radius:50%;
+      background:linear-gradient(180deg,var(--gold),var(--gold2));
+      box-shadow:0 0 25px rgba(245,210,107,.45);
+    }
+    .brand h1{
+      font-size:clamp(14px,2.4vw,18px);
+      color:var(--gold);
+      font-weight:800;
+      letter-spacing:.3px;
+    }
+
+    /* 🌟 الأزرار العامة */
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 16px;border-radius:12px;
+      font-weight:700;text-decoration:none;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      color:#fff;transition:all .35s;
+      backdrop-filter:blur(6px);
+    }
+    .btn:hover{transform:translateY(-2px)}
+    .btn.gold{
+      position:relative;overflow:hidden;
+      border:1.5px solid rgba(245,210,107,.6);
+      background:linear-gradient(135deg,rgba(245,210,107,.25),rgba(245,210,107,.1));
+      color:#000;font-weight:800;
+      box-shadow:0 0 20px rgba(245,210,107,.35);
+    }
+    .btn.gold::before{
+      content:"";position:absolute;top:0;left:-120%;
+      width:120%;height:100%;
+      background:linear-gradient(120deg,transparent,rgba(255,255,255,.45),transparent);
+      transition:left .8s;
+    }
+    .btn.gold:hover::before{left:120%}
+    .btn.gold:hover{box-shadow:0 0 35px rgba(245,210,107,.6),0 0 60px rgba(245,210,107,.3)}
+
+    /* 👤 البطاقة الشخصية */
+    .hero{
+      margin-top:20px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:22px;
+      background:linear-gradient(180deg,rgba(11,17,25,.96),rgba(10,15,22,.96));
+      box-shadow:0 12px 48px rgba(0,0,0,.4);
+      padding:clamp(24px,4vw,40px);
+    }
+    .hero-inner{display:flex;flex-direction:column;align-items:center;text-align:center;gap:20px}
+    .avatar{
+      width:140px;height:140px;border-radius:50%;
+      background:radial-gradient(circle at 35% 35%,rgba(245,210,107,.95),transparent 65%),linear-gradient(135deg,#f5d26b,#4ea8ff);
+      border:4px solid rgba(245,210,107,.7);
+      box-shadow:0 0 40px rgba(245,210,107,.4);
+    }
+    .name{
+      font-size:clamp(22px,5vw,34px);
+      font-weight:900;
+      background:linear-gradient(135deg,#fff,var(--gold));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+    .muted{color:var(--muted)}
+
+    /* 🧩 البطاقات */
+    .grid{display:grid;gap:18px;margin-top:26px}
+    .card{
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      padding:18px;
+      transition:border-color .3s;
+    }
+    .card:hover{border-color:var(--gold2)}
+    .card h3{color:var(--gold);margin-bottom:10px;font-size:18px}
+    .item{display:flex;gap:10px;margin:10px 0}
+    .bullet{
+      width:9px;height:9px;border-radius:3px;
+      background:linear-gradient(135deg,var(--gold),var(--gold2));
+      margin-top:8px;flex-shrink:0;
+    }
+    .footer{margin:36px 0 10px;text-align:center;color:var(--muted);font-size:14px}
+
+    @media(min-width:768px){
+      .hero-inner{flex-direction:row;text-align:right;justify-content:center}
+      .grid{grid-template-columns:repeat(2,1fr)}
+    }
+  </style>
+</head>
+
+<body>
+  <!-- خلفية -->
+  <div class="bg">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="aura"></div>
+  </div>
+
+  <!-- المحتوى -->
+  <div class="wrap">
+    <nav class="nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <h1>Bawou Group — Premium Identity</h1>
+      </div>
+      <div class="actions" style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn" href="index.html">↩ العودة إلى الموقع</a>
+        <a class="btn gold" href="https://orcid.org/0009-0007-7430-7565" target="_blank" rel="noopener">🔗 ORCID</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="avatar" title="Yacine Bouaziz"></div>
+        <div>
+          <h2 class="name">ياسين بوعزيز — Yacine Bouaziz</h2>
+          <p class="muted">Founder & CEO — Bawou Market | Bawou Metal</p>
+          <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn gold" href="https://www.bawoumarket.com" target="_blank">🌐 Website</a>
+            <a class="btn" href="mailto:bawou61@gmail.com">✉️ Contact</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h3>نبذة</h3>
+        <div class="item"><div class="bullet"></div><p>أبني منظومة رقمية جزائرية حديثة عبر الابتكار والتصميم والذكاء الاصطناعي. شغوف بالتقنيات التوليدية وريادة الأعمال المستدامة.</p></div>
+        <div class="item"><div class="bullet"></div><p><b>الدولة:</b> الجزائر — <b>الموقع:</b> باتنة</p></div>
+        <div class="item"><div class="bullet"></div><p><b>الكلمات المفتاحية:</b> الذكاء الاصطناعي، الابتكار الرقمي، ريادة الأعمال، باوو ماركت، باوو ميتال</p></div>
+      </article>
+
+      <article class="card">
+        <h3>الخبرة المهنية</h3>
+        <div class="item"><div class="bullet"></div><p><b>Federation of Small Businesses</b> — Liverpool, England (2023–2035) — Founder & CEO (Innovation & E-commerce)</p></div>
+      </article>
+
+      <article class="card">
+        <h3>التعليم</h3>
+        <div class="item"><div class="bullet"></div><p><b>Google Cloud Skills Boost</b> — Mountain View, CA (2025) — Certificate: Generative AI Leader</p></div>
+      </article>
+
+      <article class="card">
+        <h3>أنشطة مهنية</h3>
+        <div class="item"><div class="bullet"></div><p>عضو — Google Cloud Innovators Program (2025–الآن)</p></div>
+        <div class="item"><div class="bullet"></div><p>متحدث مدعو — Generative AI Leader for North Africa</p></div>
+        <div class="item"><div class="bullet"></div><p>رئيس تحرير — Bawou Journal of Digital Innovation</p></div>
+        <div class="item"><div class="bullet"></div><p>Mentor & Project Builder — Bawou Market Community</p></div>
+      </article>
+
+      <article class="card">
+        <h3>التمويل</h3>
+        <div class="item"><div class="bullet"></div><p><b>Bawou Market Startup Initiative</b> — Self-funded (Bawou Group) — Grant No: BW2024-001</p></div>
+      </article>
+
+      <article class="card">
+        <h3>الأعمال</h3>
+        <div class="item"><div class="bullet"></div>
+          <p><b>Launch Edition — Bawou Journal</b> (2025) — DOI: <a href="https://doi.org/10.2025/bawou.journal.001" target="_blank" rel="noopener">10.2025/bawou.journal.001</a></p>
+        </div>
+      </article>
+    </section>
+
+    <footer class="footer">© 2025 Bawou Group — Proudly Made in Algeria 🇩🇿</footer>
+  </div>
+</body>
+</html>
